@@ -1,0 +1,18 @@
+{
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "build",
+    "baseUrl": "",
+    "paths": {
+      "@definitions/*": ["./src/definitions/*"],
+      "@endpoints/*": ["./src/endpoints/*"],
+      "@utils/*": ["./src/endpoints/utils/*"],
+      "@middlewares/*": ["./src/endpoints/middlewares/*"],
+      "@emailTemplates/*": ["./src/endpoints/emailTemplates/*"],
+      "@db/*": ["./src/endpoints/db/*"],
+      "@resources/*": ["./src/endpoints/resources/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}
