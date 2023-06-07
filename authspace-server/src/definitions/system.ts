@@ -23,7 +23,7 @@ export interface BaseTokenData<
   exp?: number;
 }
 
-export interface Agent {
+export interface ActionAgent {
   agentId: string;
 
   /**
@@ -33,16 +33,16 @@ export interface Agent {
   agentTokenId: string;
 }
 
-export type PublicAgent = Pick<Agent, 'agentId' | 'agentType'>;
+export type PublicAgent = Pick<ActionAgent, 'agentId' | 'agentType'>;
 export type ConvertAgentToPublicAgent<T> = {
-  [K in keyof T]: NonNullable<T[K]> extends Agent
+  [K in keyof T]: NonNullable<T[K]> extends ActionAgent
     ? PublicAgent
     : NonNullable<T[K]> extends AnyObject
     ? ConvertAgentToPublicAgent<NonNullable<T[K]>>
     : T[K];
 };
 
-export interface SessionAgent extends Agent {
+export interface SessionAgent extends ActionAgent {
   agentToken?: AgentToken;
   user?: User;
 }
@@ -161,8 +161,8 @@ export interface ResourceWrapper<T extends Resource = Resource> {
 export interface WorkspaceResource extends Resource {
   workspaceId: string;
   providedResourceId?: string | null;
-  lastUpdatedBy: Agent;
-  createdBy: Agent;
+  lastUpdatedBy: ActionAgent;
+  createdBy: ActionAgent;
 }
 
 export type PublicResource = ConvertAgentToPublicAgent<Resource>;

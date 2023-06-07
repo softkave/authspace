@@ -4,15 +4,12 @@ import {toArray} from '../../../utils/fns';
 import {validate} from '../../../utils/validate';
 import {checkAuthorization} from '../../contexts/authorizationChecks/checkAuthorizaton';
 import {LiteralDataQuery} from '../../contexts/data/types';
-import {executeWithTxn} from '../../contexts/semantic/utils';
+import {executeWithMutationRunOptions} from '../../contexts/semantic/utils';
 import {getWorkspaceFromEndpointInput} from '../../workspaces/utils';
 import {UnassignPermissionGroupsEndpoint} from './types';
 import {unassignPermissionGroupsJoiSchema} from './validation';
 
-const unassignPermissionGroups: UnassignPermissionGroupsEndpoint = async (
-  context,
-  instData
-) => {
+const unassignPermissionGroups: UnassignPermissionGroupsEndpoint = async (context, instData) => {
   const data = validate(instData.data, unassignPermissionGroupsJoiSchema);
   const agent = await context.session.getAgent(context, instData);
   const {workspace} = await getWorkspaceFromEndpointInput(context, agent, data);
@@ -32,11 +29,9 @@ const unassignPermissionGroups: UnassignPermissionGroupsEndpoint = async (
     });
   });
 
-  await executeWithTxn(context, async opts => {
+  await executeWithMutationRunOptions(context, async opts => {
     // TODO: use $or query when we implement $or
-    await Promise.all(
-      queries.map(q => context.semantic.assignedItem.deleteManyByQuery(q, opts))
-    );
+    await Promise.all(queries.map(q => context.semantic.assignedItem.deleteManyByQuery(q, opts)));
   });
 };
 

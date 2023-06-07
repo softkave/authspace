@@ -1,7 +1,11 @@
 import {isArray} from 'lodash';
 import {AssignedItem} from '../../definitions/assignedItem';
 import {AssignPermissionGroupInput} from '../../definitions/permissionGroups';
-import {Agent, AppActionType, AppResourceType} from '../../definitions/system';
+import {
+  ActionAgent,
+  AppActionType,
+  AppResourceType,
+} from '../../definitions/system';
 import {AssignedTagInput} from '../../definitions/tag';
 import {Workspace} from '../../definitions/workspace';
 import {makeKey} from '../../utils/fns';
@@ -38,11 +42,12 @@ async function filterExistingItems<T extends AssignedItem>(
     assigneeIdList.push(item.assigneeId);
     assignedItemIdList.push(item.assignedItemId);
   });
-  const existingItems = await context.semantic.assignedItem.getByWorkspaceAssignedAndAssigneeIds(
-    workspaceId,
-    assignedItemIdList,
-    assigneeIdList
-  );
+  const existingItems =
+    await context.semantic.assignedItem.getByWorkspaceAssignedAndAssigneeIds(
+      workspaceId,
+      assignedItemIdList,
+      assigneeIdList
+    );
   const indexer = (item: Pick<AssignedItem, 'assignedItemId' | 'assigneeId'>) =>
     makeKey([item.assignedItemId, item.assigneeId]);
   const existingItemsMap = indexArray(existingItems, {indexer});
@@ -95,7 +100,10 @@ export async function addAssignedItems<T extends AssignedItem>(
     await Promise.all([
       context.semantic.assignedItem.insertItem(resolvedItems, opts),
       itemIdListToDelete &&
-        context.semantic.assignedItem.deleteManyByIdList(itemIdListToDelete, opts),
+        context.semantic.assignedItem.deleteManyByIdList(
+          itemIdListToDelete,
+          opts
+        ),
     ]);
     return resolvedItems;
   }
@@ -103,7 +111,7 @@ export async function addAssignedItems<T extends AssignedItem>(
 
 export async function addAssignedPermissionGroupList(
   context: BaseContextType,
-  agent: Agent,
+  agent: ActionAgent,
   workspaceId: string,
   permissionGroupsInput: AssignPermissionGroupInput[],
   assigneeId: string | string[],
@@ -123,7 +131,12 @@ export async function addAssignedPermissionGroupList(
   }
 
   if (!skipPermissionGroupsExistCheck) {
-    await checkPermissionGroupsExist(context, workspaceId, permissionGroupsInput, opts);
+    await checkPermissionGroupsExist(
+      context,
+      workspaceId,
+      permissionGroupsInput,
+      opts
+    );
   }
 
   if (!skipAuthCheck) {
@@ -143,14 +156,19 @@ export async function addAssignedPermissionGroupList(
     for (const id of idList) {
       const item = withAssignedAgent(
         agent,
-        newWorkspaceResource<AssignedItem>(agent, AppResourceType.AssignedItem, workspaceId, {
-          meta: {},
-          assigneeId: id,
-          assigneeType: getResourceTypeFromId(id),
-          resourceId: getNewIdForResource(AppResourceType.AssignedItem),
-          assignedItemId: input.permissionGroupId,
-          assignedItemType: AppResourceType.PermissionGroup,
-        })
+        newWorkspaceResource<AssignedItem>(
+          agent,
+          AppResourceType.AssignedItem,
+          workspaceId,
+          {
+            meta: {},
+            assigneeId: id,
+            assigneeType: getResourceTypeFromId(id),
+            resourceId: getNewIdForResource(AppResourceType.AssignedItem),
+            assignedItemId: input.permissionGroupId,
+            assignedItemType: AppResourceType.PermissionGroup,
+          }
+        )
       );
       items.push(item);
     }
@@ -162,12 +180,19 @@ export async function addAssignedPermissionGroupList(
     return item01.meta.order !== (item02 as AssignedItem).meta.order;
   };
 
-  return await addAssignedItems(context, workspaceId, items, deleteExisting, comparatorFn, opts);
+  return await addAssignedItems(
+    context,
+    workspaceId,
+    items,
+    deleteExisting,
+    comparatorFn,
+    opts
+  );
 }
 
 export async function addAssignedTagList(
   context: BaseContextType,
-  agent: Agent,
+  agent: ActionAgent,
   workspace: Workspace,
   tags: AssignedTagInput[],
   assigneeId: string,
@@ -206,7 +231,14 @@ export async function addAssignedTagList(
   });
   await Promise.all([
     checkTagsExist(context, agent, workspace, tags, AppActionType.Read),
-    addAssignedItems(context, workspace.resourceId, items, deleteExisting, undefined, opts),
+    addAssignedItems(
+      context,
+      workspace.resourceId,
+      items,
+      deleteExisting,
+      undefined,
+      opts
+    ),
   ]);
 
   return items;
@@ -218,7 +250,7 @@ export interface ISaveResourceAssignedItemsOptions {
 
 export async function saveResourceAssignedItems(
   context: BaseContextType,
-  agent: Agent,
+  agent: ActionAgent,
   workspace: Workspace,
 
   // TODO: support ID list
@@ -245,7 +277,7 @@ export async function saveResourceAssignedItems(
 
 export async function assignWorkspaceToUser(
   context: BaseContextType,
-  agent: Agent,
+  agent: ActionAgent,
   workspaceId: string,
   userId: string,
   opts: SemanticDataAccessProviderMutationRunOptions

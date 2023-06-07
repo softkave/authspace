@@ -5,7 +5,7 @@ import {
   deletePermissionItemsEndpointDefinition,
   resolveEntityPermissionsEndpointDefinition,
 } from './endpoints.mddoc';
-import resolveEntityPermissions from './resolveEntityPermissions/handler';
+import resolveEntityPermissions from './resolvePermissions/handler';
 import {PermissionItemsExportedEndpoints} from './types';
 
 export function getPermissionItemsPublicHttpEndpoints() {

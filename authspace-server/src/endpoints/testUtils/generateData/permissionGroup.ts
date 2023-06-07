@@ -1,6 +1,6 @@
 import {faker} from '@faker-js/faker';
 import {PermissionGroup} from '../../../definitions/permissionGroups';
-import {Agent, AppResourceType} from '../../../definitions/system';
+import {ActionAgent, AppResourceType} from '../../../definitions/system';
 import {getTimestamp} from '../../../utils/dateFns';
 import {getNewIdForResource} from '../../../utils/resource';
 import {executeWithTxn} from '../../contexts/semantic/utils';
@@ -10,7 +10,7 @@ export function generatePermissionGroupForTest(
   seed: Partial<PermissionGroup> = {}
 ) {
   const createdAt = getTimestamp();
-  const createdBy: Agent = {
+  const createdBy: ActionAgent = {
     agentId: getNewIdForResource(AppResourceType.User),
     agentType: AppResourceType.User,
     agentTokenId: getNewIdForResource(AppResourceType.AgentToken),

@@ -3,13 +3,14 @@ import {BaseContextType} from '../../contexts/types';
 import {Endpoint, EndpointOptionalWorkspaceIDParam} from '../../types';
 
 export interface NewAgentTokenInput {
-  providedResourceId?: string;
+  entityId: string;
   name?: string;
   description?: string;
   expires?: number;
 }
 
-export interface AddAgentTokenEndpointParams extends EndpointOptionalWorkspaceIDParam {
+export interface AddAgentTokenEndpointParams
+  extends EndpointOptionalWorkspaceIDParam {
   token: NewAgentTokenInput;
 }
 

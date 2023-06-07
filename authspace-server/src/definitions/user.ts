@@ -1,4 +1,4 @@
-import {Resource, WorkspaceResource} from './system';
+import {Resource} from './system';
 
 export interface User extends Resource {
   hash: string;
@@ -21,9 +21,4 @@ export interface UserWorkspace {
   joinedAt: number;
 }
 
-export interface UsersConfig extends WorkspaceResource {
-  schemaId: string;
-  emailVerifyUsers?: boolean;
-}
-
-export type PublicUsersConfig = UsersConfig;
+export type PublicUser = {};

@@ -1,5 +1,5 @@
 import {SchemaDefinitionProperty} from 'mongoose';
-import {Agent, Resource, WorkspaceResource} from '../definitions/system';
+import {ActionAgent, Resource, WorkspaceResource} from '../definitions/system';
 import {getTimestamp} from '../utils/dateFns';
 
 // ensures all the fields defined in the type are added to the schema
@@ -11,7 +11,7 @@ export function ensureMongoTypeFields<T extends object>(schema: {
   return schema;
 }
 
-export const agentSchema = ensureMongoTypeFields<Agent>({
+export const agentSchema = ensureMongoTypeFields<ActionAgent>({
   agentId: {type: String},
   agentType: {type: String},
   agentTokenId: {type: String},
@@ -23,10 +23,12 @@ export const resourceSchema = ensureMongoTypeFields<Resource>({
   lastUpdatedAt: {type: Number, default: getTimestamp},
 });
 
-export const workspaceResourceSchema = ensureMongoTypeFields<WorkspaceResource>({
-  ...resourceSchema,
-  workspaceId: {type: String, index: true},
-  providedResourceId: {type: String, index: true},
-  createdBy: {type: agentSchema},
-  lastUpdatedBy: {type: agentSchema},
-});
+export const workspaceResourceSchema = ensureMongoTypeFields<WorkspaceResource>(
+  {
+    ...resourceSchema,
+    workspaceId: {type: String, index: true},
+    providedResourceId: {type: String, index: true},
+    createdBy: {type: agentSchema},
+    lastUpdatedBy: {type: agentSchema},
+  }
+);

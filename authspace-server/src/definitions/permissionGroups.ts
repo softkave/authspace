@@ -1,4 +1,8 @@
-import {Agent, ConvertAgentToPublicAgent, WorkspaceResource} from './system';
+import {
+  ActionAgent,
+  ConvertAgentToPublicAgent,
+  WorkspaceResource,
+} from './system';
 
 export interface PermissionGroup extends WorkspaceResource {
   name: string;
@@ -9,7 +13,7 @@ export interface AssignedPermissionGroupMeta {
   permissionGroupId: string;
   assigneeEntityId: string;
   assignedAt: number;
-  assignedBy: Agent;
+  assignedBy: ActionAgent;
 }
 
 export type PermissionEntityInheritanceMapItem = {
@@ -20,7 +24,10 @@ export type PermissionEntityInheritanceMapItem = {
   resolvedOrder?: number;
 };
 
-export type PermissionEntityInheritanceMap = Record<string, PermissionEntityInheritanceMapItem>;
+export type PermissionEntityInheritanceMap = Record<
+  string,
+  PermissionEntityInheritanceMapItem
+>;
 
 export interface PermissionGroupMatcher {
   permissionGroupId?: string;

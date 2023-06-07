@@ -1,15 +1,19 @@
-import {Agent, ConvertAgentToPublicAgent, WorkspaceResource} from './system';
+import {
+  ActionAgent,
+  ConvertAgentToPublicAgent,
+  WorkspaceResource,
+} from './system';
 import {UsageRecordCategory} from './usageRecord';
 
 export interface UsageThreshold {
-  lastUpdatedBy: Agent;
+  lastUpdatedBy: ActionAgent;
   lastUpdatedAt: number;
   category: UsageRecordCategory;
   budget: number; // price in USD
 }
 
 export interface UsageThresholdLock {
-  lastUpdatedBy: Agent;
+  lastUpdatedBy: ActionAgent;
   lastUpdatedAt: number;
   category: UsageRecordCategory;
   locked: boolean;
@@ -41,4 +45,5 @@ export interface Workspace extends WorkspaceResource {
 
 export type PublicWorkspace = ConvertAgentToPublicAgent<Workspace>;
 export type PublicUsageThreshold = ConvertAgentToPublicAgent<UsageThreshold>;
-export type PublicUsageThresholdLock = ConvertAgentToPublicAgent<UsageThresholdLock>;
+export type PublicUsageThresholdLock =
+  ConvertAgentToPublicAgent<UsageThresholdLock>;

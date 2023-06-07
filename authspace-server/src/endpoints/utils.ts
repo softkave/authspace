@@ -1,7 +1,7 @@
 import {Express, Request, Response} from 'express';
 import {compact, defaultTo, isString} from 'lodash';
 import {
-  Agent,
+  ActionAgent,
   PublicAgent,
   PublicResource,
   PublicWorkspaceResource,
@@ -155,12 +155,12 @@ export type ResourceWithoutAssignedAgent<T> = Omit<
   'assignedAt' | 'assignedBy'
 >;
 type AssignedAgent = {
-  assignedBy: Agent;
+  assignedBy: ActionAgent;
   assignedAt: number;
 };
 
 export function withAssignedAgent<T extends AnyObject>(
-  agent: Agent,
+  agent: ActionAgent,
   item: T
 ): T & AssignedAgent {
   return {
@@ -175,7 +175,7 @@ export function withAssignedAgent<T extends AnyObject>(
 }
 
 export function withAssignedAgentList<T extends AnyObject>(
-  agent: Agent,
+  agent: ActionAgent,
   items: T[] = []
 ): Array<T & AssignedAgent> {
   return items.map(item => ({

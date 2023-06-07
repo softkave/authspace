@@ -1,5 +1,5 @@
 import assert = require('assert');
-import {Agent, AppResourceType} from '../../../definitions/system';
+import {ActionAgent, AppResourceType} from '../../../definitions/system';
 import {UsageRecordCategory} from '../../../definitions/usageRecord';
 import {Workspace, WorkspaceBillStatus} from '../../../definitions/workspace';
 import {getTimestamp} from '../../../utils/dateFns';
@@ -13,12 +13,15 @@ import {
 import {SemanticDataAccessProviderMutationRunOptions} from '../../contexts/semantic/types';
 import {BaseContextType} from '../../contexts/types';
 import {getDefaultThresholds} from '../../usageRecords/constants';
-import {checkWorkspaceNameExists, checkWorkspaceRootnameExists} from '../checkWorkspaceExists';
+import {
+  checkWorkspaceNameExists,
+  checkWorkspaceRootnameExists,
+} from '../checkWorkspaceExists';
 import {NewWorkspaceInput} from './types';
 import {generateDefaultWorkspacePermissionGroups} from './utils';
 
 export function transformUsageThresholInput(
-  agent: Agent,
+  agent: ActionAgent,
   input: Required<NewWorkspaceInput>['usageThresholds']
 ) {
   const usageThresholds: Workspace['usageThresholds'] = {};
@@ -37,7 +40,7 @@ export function transformUsageThresholInput(
 const INTERNAL_createWorkspace = async (
   context: BaseContextType,
   data: NewWorkspaceInput,
-  agent: Agent,
+  agent: ActionAgent,
   userId: string | undefined,
   opts: SemanticDataAccessProviderMutationRunOptions
 ) => {
@@ -79,11 +82,16 @@ const INTERNAL_createWorkspace = async (
   await Promise.all([
     context.semantic.workspace.insertItem(workspace, opts),
     context.semantic.permissionGroup.insertItem(
-      [adminPermissionGroup, publicPermissionGroup, collaboratorPermissionGroup],
+      [
+        adminPermissionGroup,
+        publicPermissionGroup,
+        collaboratorPermissionGroup,
+      ],
       opts
     ),
     context.semantic.permissionItem.insertItem(permissionItems, opts),
-    userId && assignWorkspaceToUser(context, agent, workspace.resourceId, userId, opts),
+    userId &&
+      assignWorkspaceToUser(context, agent, workspace.resourceId, userId, opts),
     userId &&
       addAssignedPermissionGroupList(
         context,

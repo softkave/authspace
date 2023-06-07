@@ -1,4 +1,4 @@
-import {Agent} from '../../../definitions/system';
+import {ActionAgent} from '../../../definitions/system';
 import {assignWorkspaceToUser} from '../../assignedItems/addAssignedItems';
 import {executeWithTxn} from '../../contexts/semantic/utils';
 import {BaseContextType} from '../../contexts/types';
@@ -6,7 +6,7 @@ import {generateAndInsertUserListForTest} from './user';
 
 export async function generateAndInsertCollaboratorListForTest(
   ctx: BaseContextType,
-  agent: Agent,
+  agent: ActionAgent,
   workspaceId: string,
   count = 20
 ) {

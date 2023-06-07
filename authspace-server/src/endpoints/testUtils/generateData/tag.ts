@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker';
-import {Agent, AppResourceType} from '../../../definitions/system';
+import {ActionAgent, AppResourceType} from '../../../definitions/system';
 import {Tag} from '../../../definitions/tag';
 import {getTimestamp} from '../../../utils/dateFns';
 import {getNewIdForResource} from '../../../utils/resource';
@@ -8,7 +8,7 @@ import {BaseContextType} from '../../contexts/types';
 
 export function generateTagForTest(seed: Partial<Tag> = {}) {
   const createdAt = getTimestamp();
-  const createdBy: Agent = {
+  const createdBy: ActionAgent = {
     agentId: getNewIdForResource(AppResourceType.User),
     agentType: AppResourceType.User,
     agentTokenId: getNewIdForResource(AppResourceType.AgentToken),

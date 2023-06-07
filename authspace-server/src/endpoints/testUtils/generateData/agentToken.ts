@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 import {AgentToken} from '../../../definitions/agentToken';
 import {
-  Agent,
+  ActionAgent,
   AppResourceType,
   CURRENT_TOKEN_VERSION,
 } from '../../../definitions/system';
@@ -14,7 +14,7 @@ export function generateAgentTokenForTest(
 ) {
   const agentType = AppResourceType.AgentToken;
   const agentTokenId = getNewIdForResource(agentType);
-  const createdBy: Agent = {
+  const createdBy: ActionAgent = {
     agentType,
     agentTokenId,
     agentId: agentTokenId,

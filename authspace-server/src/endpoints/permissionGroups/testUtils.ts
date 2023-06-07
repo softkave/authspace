@@ -1,32 +1,22 @@
-import {
-  AssignPermissionGroupInput,
-  PermissionGroup,
-} from '../../definitions/permissionGroups';
+import {AssignPermissionGroupInput, PermissionGroup} from '../../definitions/permissionGroups';
 import {PermissionItemAppliesTo} from '../../definitions/permissionItem';
 import {AppActionType, SessionAgent} from '../../definitions/system';
 import {makeKey} from '../../utils/fns';
 import {addAssignedPermissionGroupList} from '../assignedItems/addAssignedItems';
-import {executeWithTxn} from '../contexts/semantic/utils';
+import {executeWithMutationRunOptions} from '../contexts/semantic/utils';
 import {BaseContextType, IServerRequest} from '../contexts/types';
 import addPermissionItems from '../permissionItems/addItems/handler';
 import RequestData from '../RequestData';
 
-export function includesPermissionGroupById(
-  pgList: PermissionGroup[],
-  id: string
-) {
+export function includesPermissionGroupById(pgList: PermissionGroup[], id: string) {
   return !!pgList.find(pg => pg.resourceId === id);
 }
 
-export function makeKeyFromAssignedPermissionGroupMetaOrInput(item: {
-  permissionGroupId: string;
-}) {
+export function makeKeyFromAssignedPermissionGroupMetaOrInput(item: {permissionGroupId: string}) {
   return makeKey([item.permissionGroupId]);
 }
 
-export function toAssignedPgListInput(
-  pgList: Pick<PermissionGroup, 'resourceId'>[]
-) {
+export function toAssignedPgListInput(pgList: Pick<PermissionGroup, 'resourceId'>[]) {
   return pgList.map(
     (pg): AssignPermissionGroupInput => ({
       permissionGroupId: pg.resourceId,
@@ -41,7 +31,7 @@ export async function assignPgListToIdList(
   entityIdList: string[],
   pgInputList: AssignPermissionGroupInput[]
 ) {
-  await executeWithTxn(context, async opts =>
+  await executeWithMutationRunOptions(context, async opts =>
     addAssignedPermissionGroupList(
       context,
       agent,

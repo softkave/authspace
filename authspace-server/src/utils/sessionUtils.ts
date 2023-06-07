@@ -1,11 +1,17 @@
 import {AgentToken} from '../definitions/agentToken';
-import {Agent, AppResourceType, SessionAgent} from '../definitions/system';
+import {
+  ActionAgent,
+  AppResourceType,
+  SessionAgent,
+} from '../definitions/system';
 import {User} from '../definitions/user';
 import {InvalidRequestError} from '../endpoints/errors';
 import {appAssert} from './assertion';
 import {reuseableErrors} from './reusableErrors';
 
-export function makeWorkspaceAgentTokenAgent(agentToken: AgentToken): SessionAgent {
+export function makeWorkspaceAgentTokenAgent(
+  agentToken: AgentToken
+): SessionAgent {
   return {
     agentToken,
     agentId: agentToken.resourceId,
@@ -14,7 +20,10 @@ export function makeWorkspaceAgentTokenAgent(agentToken: AgentToken): SessionAge
   };
 }
 
-export function makeUserSessionAgent(user: User, agentToken: AgentToken): SessionAgent {
+export function makeUserSessionAgent(
+  user: User,
+  agentToken: AgentToken
+): SessionAgent {
   appAssert(user.resourceId === agentToken.separateEntityId);
   return {
     agentToken,
@@ -25,7 +34,10 @@ export function makeUserSessionAgent(user: User, agentToken: AgentToken): Sessio
   };
 }
 
-export function getWorkspaceIdNoThrow(agent: SessionAgent, providedWorkspaceId?: string) {
+export function getWorkspaceIdNoThrow(
+  agent: SessionAgent,
+  providedWorkspaceId?: string
+) {
   const workspaceId = providedWorkspaceId
     ? providedWorkspaceId
     : agent.agentToken
@@ -34,7 +46,10 @@ export function getWorkspaceIdNoThrow(agent: SessionAgent, providedWorkspaceId?:
   return workspaceId;
 }
 
-export function getWorkspaceIdFromSessionAgent(agent: SessionAgent, providedWorkspaceId?: string) {
+export function getWorkspaceIdFromSessionAgent(
+  agent: SessionAgent,
+  providedWorkspaceId?: string
+) {
   const workspaceId = getWorkspaceIdNoThrow(agent, providedWorkspaceId);
   if (!workspaceId) {
     throw new InvalidRequestError('Workspace ID not provided.');
@@ -64,8 +79,10 @@ export function assertGetWorkspaceIdFromAgent(agent: SessionAgent) {
   return workspaceId;
 }
 
-export function getActionAgentFromSessionAgent(sessionAgent: SessionAgent): Agent {
-  const agent: Agent = {
+export function getActionAgentFromSessionAgent(
+  sessionAgent: SessionAgent
+): ActionAgent {
+  const agent: ActionAgent = {
     agentId: sessionAgent.agentId,
     agentType: sessionAgent.agentType,
     agentTokenId: sessionAgent.agentTokenId,
@@ -74,7 +91,8 @@ export function getActionAgentFromSessionAgent(sessionAgent: SessionAgent): Agen
 }
 
 export function isSessionAgent(agent: any): agent is SessionAgent {
-  if (!(agent as SessionAgent).agentId || !(agent as SessionAgent).agentType) return false;
+  if (!(agent as SessionAgent).agentId || !(agent as SessionAgent).agentType)
+    return false;
   if (
     (agent as SessionAgent).agentToken ||
     (agent as SessionAgent).user ||

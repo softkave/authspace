@@ -1,7 +1,10 @@
 import {flatten} from 'lodash';
-import {PermissionItem, PublicPermissionItem} from '../../definitions/permissionItem';
 import {
-  Agent,
+  PermissionItem,
+  PublicPermissionItem,
+} from '../../definitions/permissionItem';
+import {
+  ActionAgent,
   AppActionType,
   AppResourceType,
   SessionAgent,
@@ -24,7 +27,11 @@ import {workspaceResourceFields} from '../utils';
 import {INTERNAL_addPermissionItems} from './addItems/utils';
 import {DeletePermissionItemInput} from './deleteItems/types';
 import {INTERNAL_deletePermissionItems} from './deleteItems/utils';
-import {PermissionItemInput, PermissionItemInputEntity, PermissionItemInputTarget} from './types';
+import {
+  PermissionItemInput,
+  PermissionItemInputEntity,
+  PermissionItemInputTarget,
+} from './types';
 
 const permissionItemFields = getFields<PublicPermissionItem>({
   ...workspaceResourceFields,
@@ -40,7 +47,8 @@ const permissionItemFields = getFields<PublicPermissionItem>({
 });
 
 export const permissionItemExtractor = makeExtract(permissionItemFields);
-export const permissionItemListExtractor = makeListExtract(permissionItemFields);
+export const permissionItemListExtractor =
+  makeListExtract(permissionItemFields);
 
 export function throwPermissionItemNotFound() {
   throw reuseableErrors.permissionItem.notFound();
@@ -48,7 +56,7 @@ export function throwPermissionItemNotFound() {
 
 export async function updatePublicPermissionGroupAccessOps(props: {
   context: BaseContextType;
-  agent: Agent;
+  agent: ActionAgent;
   workspace: Workspace;
   opts: SemanticDataAccessProviderMutationRunOptions;
   items?: PermissionItemInput[];
@@ -93,13 +101,19 @@ export abstract class PermissionItemUtils {
   static extractPublicPermissionItemList = permissionItemListExtractor;
 }
 
-export function getTargetType(data: {targetId?: string; targetType?: AppResourceType}) {
+export function getTargetType(data: {
+  targetId?: string;
+  targetType?: AppResourceType;
+}) {
   const targetType = data.targetType
     ? data.targetType
     : data.targetId
     ? getResourceTypeFromId(data.targetId)
     : null;
-  appAssert(targetType, new InvalidRequestError('Target ID or target type must be present'));
+  appAssert(
+    targetType,
+    new InvalidRequestError('Target ID or target type must be present')
+  );
   return targetType;
 }
 
@@ -115,7 +129,9 @@ export const permissionItemIndexer = (item: PermissionItemBase) => {
   ]);
 };
 
-export function assertPermissionItem(item?: PermissionItem | null): asserts item {
+export function assertPermissionItem(
+  item?: PermissionItem | null
+): asserts item {
   appAssert(item, reuseableErrors.permissionItem.notFound());
 }
 
@@ -135,15 +151,20 @@ export async function getPermissionItemEntities(
     ],
     workspaceId,
     inputResources: flatten(
-      entities.map(entity => toArray(entity.entityId).map(entityId => ({resourceId: entityId})))
+      entities.map(entity =>
+        toArray(entity.entityId).map(entityId => ({resourceId: entityId}))
+      )
     ),
     checkAuth: true,
     checkBelongsToWorkspace: true,
     action: AppActionType.Read,
   });
-  resources = await resourceListWithAssignedItems(context, workspaceId, resources, [
-    AppResourceType.User,
-  ]);
+  resources = await resourceListWithAssignedItems(
+    context,
+    workspaceId,
+    resources,
+    [AppResourceType.User]
+  );
   checkResourcesBelongsToWorkspace(workspaceId, resources);
   return resources;
 }
@@ -152,7 +173,9 @@ export async function getPermissionItemTargets(
   context: BaseContextType,
   agent: SessionAgent,
   workspace: Workspace,
-  target: Partial<PermissionItemInputTarget> | Partial<PermissionItemInputTarget>[]
+  target:
+    | Partial<PermissionItemInputTarget>
+    | Partial<PermissionItemInputTarget>[]
 ) {
   return await INTERNAL_getResources({
     context,

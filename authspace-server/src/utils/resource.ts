@@ -1,7 +1,7 @@
 import {invert} from 'lodash';
 import {nanoid} from 'nanoid';
 import {
-  Agent,
+  ActionAgent,
   AppResourceType,
   Resource,
   SessionAgent,
@@ -50,9 +50,9 @@ export const RESOURCE_TYPE_SHORT_NAMES: Record<AppResourceType, string> = {
   [AppResourceType.FilePresignedPath]: padShortName('filepsp'),
 };
 
-export const SHORT_NAME_TO_RESOURCE_TYPE = invert(RESOURCE_TYPE_SHORT_NAMES) as InvertRecord<
-  typeof RESOURCE_TYPE_SHORT_NAMES
->;
+export const SHORT_NAME_TO_RESOURCE_TYPE = invert(
+  RESOURCE_TYPE_SHORT_NAMES
+) as InvertRecord<typeof RESOURCE_TYPE_SHORT_NAMES>;
 
 export class InvalidResourceIdError extends OperationError {
   name = 'InvalidResourceIdError';
@@ -83,7 +83,8 @@ export const ID_0 = ''.padEnd(ID_SIZE, RESOURCE_TYPE_SHORT_NAME_PADDING);
 export function getNewIdForResource(
   resourceType: AppResourceType,
   size = ID_SIZE,
-  id0 = resourceType === AppResourceType.System || resourceType === AppResourceType.Public
+  id0 = resourceType === AppResourceType.System ||
+    resourceType === AppResourceType.Public
 ) {
   let id = ID_0;
   if (!id0) {
@@ -102,7 +103,9 @@ export function isAppResourceId(resourceId: string) {
   return true;
 }
 
-export function tryGetResourceTypeFromId(id: string): AppResourceType | undefined {
+export function tryGetResourceTypeFromId(
+  id: string
+): AppResourceType | undefined {
   const shortName = id.slice(0, RESOURCE_TYPE_SHORT_NAME_MAX_LEN);
   const type = SHORT_NAME_TO_RESOURCE_TYPE[shortName];
   return type;
@@ -130,12 +133,14 @@ export function newResource<T extends AnyObject>(
 }
 
 export function newWorkspaceResource<T extends AnyObject>(
-  agent: Agent | SessionAgent,
+  agent: ActionAgent | SessionAgent,
   type: AppResourceType,
   workspaceId: string,
   seed?: Omit<T, keyof WorkspaceResource> & Partial<WorkspaceResource>
 ): WorkspaceResource & T {
-  const createdBy = isSessionAgent(agent) ? getActionAgentFromSessionAgent(agent) : agent;
+  const createdBy = isSessionAgent(agent)
+    ? getActionAgentFromSessionAgent(agent)
+    : agent;
   const createdAt = getTimestamp();
   const item: WorkspaceResource = {
     createdBy,

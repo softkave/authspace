@@ -86,3 +86,13 @@ export type DataSchemasExportedEndpoints = {
   getSchema: ExportedHttpEndpointWithMddocDefinition<GetDataSchemaHttpEndpoint>;
   updateSchema: ExportedHttpEndpointWithMddocDefinition<UpdateDataSchemaHttpEndpoint>;
 };
+
+export type DataSchemaMatcher = {
+  schemaId?: string;
+  schemaName?: string;
+};
+
+export type DataSchemaViewMatcher = {
+  schemaViewId?: string;
+  schemaViewName?: string;
+};

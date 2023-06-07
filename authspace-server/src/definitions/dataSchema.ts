@@ -31,8 +31,12 @@ export interface DataSchemaItem {
     match: string;
     flags?: string;
   };
-  public?: boolean;
   semanticGroup: DataSchemaItemSemanticGroup;
+  emailVerify?: boolean;
+}
+
+export interface DataSchemaViewItem {
+  field: string;
 }
 
 export interface DataSchema extends WorkspaceResource {
@@ -42,4 +46,11 @@ export interface DataSchema extends WorkspaceResource {
   multikeyUnique?: string[];
 }
 
+export interface DataSchemaView extends WorkspaceResource {
+  name: string;
+  description?: string;
+  items: Array<DataSchemaViewItem>;
+}
+
 export type PublicDataSchema = DataSchema;
+export type PublicDataSchemaView = DataSchemaView;

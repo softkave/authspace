@@ -1,5 +1,5 @@
 import {DataSchema} from '../../../definitions/dataSchema';
-import {Agent, AppResourceType} from '../../../definitions/system';
+import {ActionAgent, AppResourceType} from '../../../definitions/system';
 import {Workspace} from '../../../definitions/workspace';
 import {newWorkspaceResource} from '../../../utils/resource';
 import {SemanticDataAccessProviderMutationRunOptions} from '../../contexts/semantic/types';
@@ -9,7 +9,7 @@ import {NewDataSchemaInput} from './types';
 
 export const INTERNAL_createDataSchema = async (
   context: BaseContextType,
-  agent: Agent,
+  agent: ActionAgent,
   workspace: Workspace,
   data: NewDataSchemaInput,
   opts: SemanticDataAccessProviderMutationRunOptions

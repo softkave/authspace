@@ -1,5 +1,5 @@
 import {
-  Agent,
+  ActionAgent,
   AppResourceType,
   ConvertAgentToPublicAgent,
   PublicWorkspaceResource,
@@ -14,8 +14,8 @@ export interface AgentToken extends Resource {
   agentType: AppResourceType;
   workspaceId: string | null;
   providedResourceId?: string | null;
-  lastUpdatedBy: Agent;
-  createdBy: Agent;
+  lastUpdatedBy: ActionAgent;
+  createdBy: ActionAgent;
 
   /**
    * Timestamp in milliseconds.

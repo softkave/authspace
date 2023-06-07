@@ -7,7 +7,10 @@ import {
   HttpEndpointRequestHeaders_AuthRequired_ContentType,
   HttpEndpointResponseHeaders_ContentType_ContentLength,
 } from '../types';
-import {AddPermissionItemsEndpoint, AddPermissionItemsEndpointParams} from './addItems/types';
+import {
+  AddPermissionItemsEndpoint,
+  AddPermissionItemsEndpointParams,
+} from './addItems/types';
 import {
   DeletePermissionItemsEndpoint,
   DeletePermissionItemsEndpointParams,
@@ -16,7 +19,7 @@ import {
   ResolveEntityPermissionsEndpoint,
   ResolveEntityPermissionsEndpointParams,
   ResolveEntityPermissionsEndpointResult,
-} from './resolveEntityPermissions/types';
+} from './resolvePermissions/types';
 
 export interface PermissionItemInputTarget {
   targetId?: string | string[];

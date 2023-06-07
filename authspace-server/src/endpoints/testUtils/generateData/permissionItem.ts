@@ -3,7 +3,7 @@ import {
   PermissionItem,
   PermissionItemAppliesTo,
 } from '../../../definitions/permissionItem';
-import {Agent, AppResourceType} from '../../../definitions/system';
+import {ActionAgent, AppResourceType} from '../../../definitions/system';
 import {getTimestamp} from '../../../utils/dateFns';
 import {
   getNewIdForResource,
@@ -17,7 +17,7 @@ export function generatePermissionItemForTest(
   seed: Partial<PermissionItem> = {}
 ) {
   const createdAt = getTimestamp();
-  const createdBy: Agent = {
+  const createdBy: ActionAgent = {
     agentId: getNewIdForResource(AppResourceType.User),
     agentType: AppResourceType.User,
     agentTokenId: getNewIdForResource(AppResourceType.AgentToken),

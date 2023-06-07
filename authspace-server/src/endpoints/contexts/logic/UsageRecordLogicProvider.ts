@@ -1,5 +1,5 @@
 import {defaultTo} from 'lodash';
-import {Agent, AppResourceType} from '../../../definitions/system';
+import {ActionAgent, AppResourceType} from '../../../definitions/system';
 import {
   UsageRecord,
   UsageRecordArtifact,
@@ -31,7 +31,7 @@ export interface UsageRecordInput {
 export class UsageRecordLogicProvider {
   insert = async (
     ctx: BaseContextType,
-    agent: Agent,
+    agent: ActionAgent,
     input: UsageRecordInput
   ) => {
     const record = this.makeLevel01Record(agent, input);
@@ -72,7 +72,7 @@ export class UsageRecordLogicProvider {
     return true;
   };
 
-  private makeLevel01Record = (agent: Agent, input: UsageRecordInput) => {
+  private makeLevel01Record = (agent: ActionAgent, input: UsageRecordInput) => {
     const record: UsageRecord = newWorkspaceResource(
       agent,
       AppResourceType.UsageRecord,
@@ -93,7 +93,7 @@ export class UsageRecordLogicProvider {
   };
 
   private makeLevel02Record = (
-    agent: Agent,
+    agent: ActionAgent,
     record: UsageRecord,
     seed: Partial<UsageRecord> &
       Pick<UsageRecord, 'fulfillmentStatus' | 'usage' | 'usageCost'>
@@ -115,7 +115,7 @@ export class UsageRecordLogicProvider {
 
   private async getUsagel2(
     context: BaseContextType,
-    agent: Agent,
+    agent: ActionAgent,
     record: UsageRecord,
     category: UsageRecordCategory,
     status: UsageRecordFulfillmentStatus
@@ -149,7 +149,7 @@ export class UsageRecordLogicProvider {
 
   private checkWorkspaceBillStatus = async (
     context: BaseContextType,
-    agent: Agent,
+    agent: ActionAgent,
     workspace: Workspace,
     record: UsageRecord
   ) => {
@@ -182,7 +182,7 @@ export class UsageRecordLogicProvider {
 
   private checkWorkspaceUsageLocks = async (
     context: BaseContextType,
-    agent: Agent,
+    agent: ActionAgent,
     workspace: Workspace,
     record: UsageRecord
   ) => {
@@ -221,7 +221,7 @@ export class UsageRecordLogicProvider {
 
   private checkExceedsRemainingUsage = async (
     context: BaseContextType,
-    agent: Agent,
+    agent: ActionAgent,
     workspace: Workspace,
     record: UsageRecord
   ) => {
@@ -305,7 +305,7 @@ export class UsageRecordLogicProvider {
 
   private fulfillRecord = async (
     context: BaseContextType,
-    agent: Agent,
+    agent: ActionAgent,
     record: UsageRecord,
     usageFulfilledL2: UsageRecord | undefined,
     usageTotalFulfilled: UsageRecord | undefined,
@@ -351,7 +351,7 @@ export class UsageRecordLogicProvider {
 
   private dropRecord = async (
     context: BaseContextType,
-    agent: Agent,
+    agent: ActionAgent,
     record: UsageRecord,
     dropReason: UsageRecordDropReason,
     usageDroppedL2: UsageRecord | undefined,

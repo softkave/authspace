@@ -1,6 +1,10 @@
 import {defaultTo, omit} from 'lodash';
 import {AgentToken} from '../../../definitions/agentToken';
-import {Agent, AppResourceType, CURRENT_TOKEN_VERSION} from '../../../definitions/system';
+import {
+  ActionAgent,
+  AppResourceType,
+  CURRENT_TOKEN_VERSION,
+} from '../../../definitions/system';
 import {Workspace} from '../../../definitions/workspace';
 import {newWorkspaceResource} from '../../../utils/resource';
 import {reuseableErrors} from '../../../utils/reusableErrors';
@@ -11,7 +15,7 @@ import {NewAgentTokenInput} from './types';
 
 export const internalCreateAgentToken = async (
   context: BaseContextType,
-  agent: Agent,
+  agent: ActionAgent,
   workspace: Workspace,
   data: NewAgentTokenInput,
   opts: SemanticDataAccessProviderMutationRunOptions
@@ -26,7 +30,10 @@ export const internalCreateAgentToken = async (
     );
   }
 
-  if (token) throw reuseableErrors.agentToken.withProvidedIdExists(data.providedResourceId);
+  if (token)
+    throw reuseableErrors.agentToken.withProvidedIdExists(
+      data.providedResourceId
+    );
 
   token = newWorkspaceResource<AgentToken>(
     agent,
@@ -41,7 +48,8 @@ export const internalCreateAgentToken = async (
     }
   );
   await Promise.all([
-    data.name && checkAgentTokenNameExists(context, workspace.resourceId, data.name, opts),
+    data.name &&
+      checkAgentTokenNameExists(context, workspace.resourceId, data.name, opts),
   ]);
   await context.semantic.agentToken.insertItem(token, opts);
   return token;

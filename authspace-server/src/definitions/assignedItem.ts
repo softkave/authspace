@@ -1,20 +1,13 @@
 import {AnyObject} from '../utils/types';
-import {AppResourceType, WorkspaceResource} from './system';
-import {AssignedTag} from './tag';
+import {WorkspaceResource} from './system';
 
-export interface AssignedItem<Meta extends AnyObject = AnyObject> extends WorkspaceResource {
-  assignedItemId: string;
-  assignedItemType: AppResourceType;
-  assigneeId: string;
-  assigneeType: AppResourceType;
+export type AssignedItemPartRepresentation = string | number | AnyObject;
+
+export interface AssignedItem<Meta extends AnyObject = AnyObject>
+  extends WorkspaceResource {
+  assignee: AssignedItemPartRepresentation;
+  assigned: AssignedItemPartRepresentation;
+  assigneeHash: string;
+  assignerHash: string;
   meta: Meta;
 }
-
-export type AssignedItemMainFieldsMatcher = Pick<
-  AssignedItem,
-  'assignedItemId' | 'assigneeId' | 'workspaceId'
->;
-
-export type ResourceWithTags<T> = T & {
-  tags: AssignedTag[];
-};

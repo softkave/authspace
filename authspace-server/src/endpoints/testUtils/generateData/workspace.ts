@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker';
-import {Agent, AppResourceType} from '../../../definitions/system';
+import {ActionAgent, AppResourceType} from '../../../definitions/system';
 import {UsageRecordCategory} from '../../../definitions/usageRecord';
 import {Workspace, WorkspaceBillStatus} from '../../../definitions/workspace';
 import {getTimestamp} from '../../../utils/dateFns';
@@ -44,7 +44,7 @@ export function generateTestUsageThresholdInputMap(
 
 export function generateTestWorkspace(seed: Partial<Workspace> = {}) {
   const createdAt = getTimestamp();
-  const createdBy: Agent = {
+  const createdBy: ActionAgent = {
     agentId: getNewIdForResource(AppResourceType.User),
     agentType: AppResourceType.User,
     agentTokenId: getNewIdForResource(AppResourceType.AgentToken),
