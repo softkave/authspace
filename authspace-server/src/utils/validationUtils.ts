@@ -29,10 +29,16 @@ export const validationConstants = {
 // const uuid = Joi.string().guid().trim();
 const color = Joi.string().trim().lowercase().regex(regExPatterns.hexColor);
 const alphanum = Joi.string().regex(str);
-const URL = Joi.string().uri().trim().max(validationConstants.maxImageURLLength);
+const URL = Joi.string()
+  .uri()
+  .trim()
+  .max(validationConstants.maxImageURLLength);
 const positiveNum = Joi.number().integer().positive();
 const name = Joi.string().trim().max(endpointConstants.maxNameLength);
-const description = Joi.string().allow(null, '').max(endpointConstants.maxDescriptionLength).trim();
+const description = Joi.string()
+  .allow(null, '')
+  .max(endpointConstants.maxDescriptionLength)
+  .trim();
 const zipcode = Joi.string().regex(regExPatterns.zipcode);
 const phone = Joi.string().regex(regExPatterns.phone);
 const time = Joi.date().timestamp();
@@ -46,14 +52,35 @@ const resourceIdList = Joi.array()
   .items(resourceId)
   .min(1)
   .max(validationConstants.maxResourceIdInputLength);
-const resourceIdOrResourceIdList = Joi.alternatives().try(resourceId, resourceIdList);
+const resourceIdOrResourceIdList = Joi.alternatives().try(
+  resourceId,
+  resourceIdList
+);
 const fromNowMs = Joi.number().integer().min(0);
 const fromNowSecs = Joi.number().integer().min(0);
 const resourceType = Joi.string().valid(...systemAppResourceTypesList);
 const crudAction = Joi.string().valid(...getWorkspaceActionList());
-const crudActionList = Joi.array().items(crudAction).max(getWorkspaceActionList().length);
-const providedResourceId = Joi.string().max(endpointConstants.providedResourceIdMaxLength);
+const crudActionList = Joi.array()
+  .items(crudAction)
+  .max(getWorkspaceActionList().length);
+const providedResourceId = Joi.string().max(
+  endpointConstants.providedResourceIdMaxLength
+);
 const crudActionOrList = Joi.alternatives().try(crudAction, crudActionList);
+
+const unknownString = Joi.string().min(1).max(100);
+const unknownNum = Joi.number();
+
+// TODO: we'll need to build a data validation tool to handle validating
+// arbitrary keys and to enforce value types and depth
+const unknownObject = Joi.object().unknown(true);
+const unknownList = Joi.array().max(10);
+const unknown = Joi.alternatives().try(
+  unknownString,
+  unknownNum,
+  unknownObject,
+  unknownList
+);
 
 export const validationSchemas = {
   resourceId,
@@ -76,6 +103,7 @@ export const validationSchemas = {
   crudActionList,
   crudActionOrList,
   providedResourceId,
+  unknown,
 };
 
 export function stripOnEmpty(schema: Joi.Schema, fieldName: string) {

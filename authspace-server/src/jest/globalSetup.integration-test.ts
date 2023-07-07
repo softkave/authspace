@@ -1,5 +1,5 @@
 import {getMongoConnection} from '../db/connection';
-import BaseContext, {getFileProvider} from '../endpoints/contexts/BaseContext';
+import BaseContext from '../endpoints/contexts/BaseContext';
 import {
   getDataProviders,
   getLogicProviders,

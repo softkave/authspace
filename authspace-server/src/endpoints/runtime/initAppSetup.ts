@@ -1,10 +1,6 @@
 import {last, merge} from 'lodash';
-import {Folder} from '../../definitions/folder';
 import {PermissionGroup} from '../../definitions/permissionGroups';
-import {
-  PermissionItem,
-  PermissionItemAppliesTo,
-} from '../../definitions/permissionItem';
+import {PermissionItem} from '../../definitions/permissionItem';
 import {
   AppActionType,
   AppResourceType,

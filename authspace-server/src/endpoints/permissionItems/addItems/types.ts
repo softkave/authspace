@@ -1,11 +1,16 @@
-import {PermissionItemPartRepresentation} from '@/definitions/permissionItem';
+import {
+  PermissionItemAction,
+  PermissionItemEntity,
+  PermissionItemTarget,
+} from 'src/definitions/permissionItem';
 import {BaseContextType} from '../../contexts/types';
 import {Endpoint, EndpointOptionalWorkspaceIDParam} from '../../types';
 import {PermissionItemInput} from '../types';
 
 export interface AddPermissionItemInput {
-  target: PermissionItemPartRepresentation;
-  action: PermissionItemPartRepresentation;
+  entity: PermissionItemEntity;
+  target: PermissionItemTarget;
+  action: PermissionItemAction;
   grantAccess: boolean;
 }
 

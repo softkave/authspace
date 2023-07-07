@@ -7,7 +7,7 @@ export type DataSchemaItemType =
   | 'map'
   | 'list';
 
-export type DataSchemaItemSemanticGroup =
+export type DataSchemaItemSupportedSemanticGroup =
   | 'email'
   | 'password'
   | 'firstName'
@@ -31,12 +31,13 @@ export interface DataSchemaItem {
     match: string;
     flags?: string;
   };
-  semanticGroup: DataSchemaItemSemanticGroup;
+  semanticGroup?: DataSchemaItemSupportedSemanticGroup;
   emailVerify?: boolean;
 }
 
 export interface DataSchemaViewItem {
   field: string;
+  viewField?: string;
 }
 
 export interface DataSchema extends WorkspaceResource {

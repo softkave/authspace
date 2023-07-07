@@ -1,12 +1,14 @@
-import {AnyObject} from '@/utils/types';
 import {ConvertAgentToPublicAgent, WorkspaceResource} from './system';
+import {UnknownType} from './types';
 
-export type PermissionItemPartRepresentation = string | number | AnyObject;
+export type PermissionItemEntity = UnknownType;
+export type PermissionItemAction = UnknownType;
+export type PermissionItemTarget = UnknownType;
 
 export interface PermissionItem extends WorkspaceResource {
-  entity: PermissionItemPartRepresentation;
-  action: PermissionItemPartRepresentation;
-  target: PermissionItemPartRepresentation;
+  entity: PermissionItemEntity;
+  action: PermissionItemAction;
+  target: PermissionItemTarget;
   grantAccess: boolean;
 }
 
